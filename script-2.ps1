@@ -1,15 +1,15 @@
 Write-Host "by exec"
 
 
-$exe_dosyasi = Read-Host "Lutfen hedef dosyanin konumunu girin (ornegin: C:\path\to\app-name.exe):"
+$exe_dosyasi = Read-Host "Please enter the location of the target file (for example: C:\path\to\app-name.exe):"
 
 if (-not (Test-Path $exe_dosyasi -PathType Leaf)) {
-    Write-Host "Hedef dosya bulunamadi."
+    Write-Host "The target file was not found."
     exit
 }
 
-$eski_hex = Read-Host "Degistirilecek eski hex kodunu girin (ornegin: 91234678989321):"
-$yeni_hex = Read-Host "Yeni hex kodunu girin (ornegin: BCE22501488322):"
+$eski_hex = Read-Host "Enter the old hex code to be replaced (for example: 91234678989321):"
+$yeni_hex = Read-Host "Enter the new hex code (for example: BCE22501488322):"
 
 function HexDuzenle {
     param (
@@ -26,13 +26,13 @@ function HexDuzenle {
             $duzenlenmisBytes[$i / 2] = [byte]::Parse($duzenlenmisHex.Substring($i, 2), 'HexNumber')
         }
         [System.IO.File]::WriteAllBytes($dosya, $duzenlenmisBytes)
-        Write-Host "Hex kodu basariyla degistirildi."
+        Write-Host "Hex code has been changed successfully."
     } catch {
-        Write-Host "Hata oluştu: $_"
+        Write-Host "An error occurred: $_"
     }
 }
 
 HexDuzenle -dosya $exe_dosyasi -yeniHex $yeni_hex -eskiHex $eski_hex
 
-Write-Host "İslem tamamlandi. Devam etmek icin bir tusa basin..."
+Write-Host "Process completed. Press any key to continue..."
 $null = $Host.UI.RawUI.ReadKey('NoEcho,IncludeKeyDown')
